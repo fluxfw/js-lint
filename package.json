@@ -1,0 +1,28 @@
+{
+    "name": "@fluxfw/flux-js-lint",
+    "productName": "flux-js-lint",
+    "version": "2022-09-21-1",
+    "description": "My eslint configuration and runner",
+    "keywords": [
+        "config",
+        "configuration",
+        "docker",
+        "eslint",
+        "javascript",
+        "js",
+        "lint",
+        "node",
+        "nodejs",
+        "run",
+        "runner"
+    ],
+    "homepage": "",
+    "dependencies": {
+        "eslint": "8.23.1",
+        "eslint-plugin-json": "3.1.0"
+    },
+    "bin": {
+        "flux-js-lint": "bin/flux-js-lint.mjs"
+    },
+    "private": true
+}
