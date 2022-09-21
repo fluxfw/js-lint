@@ -1,0 +1,14 @@
+*
+!.local
+!.local/**
+!bin
+!bin/**
+!.dockerignore
+!.eslintrc.json
+!.gitignore
+!.gitlab-ci.yml
+!CHANGELOG.md
+!Dockerfile
+!package.json
+!package-lock.json
+!README.md

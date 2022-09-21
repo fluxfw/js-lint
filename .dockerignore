@@ -1,0 +1,5 @@
+*
+!bin/flux-js-lint.mjs
+!.eslintrc.json
+!package.json
+!package-lock.json
