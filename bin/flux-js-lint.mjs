@@ -4,6 +4,9 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
 try {
+    process.on("uncaughtException", console.error);
+    process.on("unhandledRejection", console.error);
+
     const __dirname = dirname(fileURLToPath(import.meta.url));
 
     const eslint = new ESLint({
@@ -29,5 +32,6 @@ try {
     }
 } catch (error) {
     console.error(error);
+
     process.exit(1);
 }

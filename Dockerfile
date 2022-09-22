@@ -1,9 +1,9 @@
 FROM node:18-alpine AS build
 
-COPY package*.json /build//flux-js-lint/
-RUN (cd /build//flux-js-lint && npm ci --omit=dev)
+COPY package*.json /build/flux-js-lint/
+RUN (cd /build/flux-js-lint && npm ci --omit=dev)
 
-COPY . /build//flux-js-lint
+COPY . /build/flux-js-lint
 
 FROM node:18-alpine
 
