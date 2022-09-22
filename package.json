@@ -1,7 +1,7 @@
 {
-    "name": "@flux/flux-js-lint",
+    "name": "flux-js-lint",
     "productName": "flux-js-lint",
-    "version": "2022-09-21-1",
+    "version": "2022-09-22-1",
     "description": "My eslint configuration and runner",
     "keywords": [
         "ci",
