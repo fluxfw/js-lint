@@ -1,5 +1,5 @@
 {
-    "name": "@fluxfw/flux-js-lint",
+    "name": "@flux/flux-js-lint",
     "productName": "flux-js-lint",
     "version": "2022-09-21-1",
     "description": "My eslint configuration and runner",
