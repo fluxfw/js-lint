@@ -1,11 +1,13 @@
 #!/usr/bin/env node
 import { ESLint } from "eslint";
 import { fileURLToPath } from "node:url";
+import { ShutdownHandlerApi } from "../node_modules/flux-shutdown-handler-api/src/Adapter/Api/ShutdownHandlerApi.mjs";
 import { dirname, join } from "node:path";
 
 try {
-    process.on("uncaughtException", console.error);
-    process.on("unhandledRejection", console.error);
+    const shutdown_handler_api = ShutdownHandlerApi.new();
+    await shutdown_handler_api.init();
+    shutdown_handler_api.getShutdownHandler();
 
     const __dirname = dirname(fileURLToPath(import.meta.url));
 
