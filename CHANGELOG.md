@@ -6,6 +6,12 @@ Changes:
 
 \-
 
+## v2022-09-26-2
+
+Changes:
+
+- Use flux-shutdown-handler-api
+
 ## v2022-09-26-1
 
 Changes:
