@@ -6,6 +6,12 @@ Changes:
 
 \-
 
+## v2022-10-03-1
+
+Changes:
+
+- Error on unused vars
+
 ## v2022-09-26-2
 
 Changes:
