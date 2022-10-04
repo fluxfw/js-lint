@@ -6,6 +6,12 @@ Changes:
 
 \-
 
+## v2022-10-04-1
+
+Changes:
+
+- Error on multiple assigns
+
 ## v2022-10-03-1
 
 Changes:
