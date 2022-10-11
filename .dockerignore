@@ -1,5 +1,6 @@
 *
 !bin/flux-js-lint.mjs
+!bin/install-dependencies.sh
 !.eslintrc.json
 !package.json
 !package-lock.json

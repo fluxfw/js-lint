@@ -1,6 +1,7 @@
 FROM node:18-alpine AS build
 
 COPY package*.json /build/flux-js-lint/
+COPY bin/install-dependencies.sh /build/flux-js-lint/bin/install-dependencies.sh
 RUN (cd /build/flux-js-lint && npm ci --omit=dev)
 
 COPY . /build/flux-js-lint

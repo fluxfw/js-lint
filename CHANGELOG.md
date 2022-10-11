@@ -6,6 +6,12 @@ Changes:
 
 \-
 
+## v2022-10-11-1
+
+Changes:
+
+- install dependencies script
+
 ## v2022-10-04-1
 
 Changes:
