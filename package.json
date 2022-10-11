@@ -1,7 +1,7 @@
 {
     "name": "flux-js-lint",
     "productName": "flux-js-lint",
-    "version": "2022-10-04-1",
+    "version": "2022-10-11-1",
     "description": "My eslint configuration and runner",
     "keywords": [
         "ci",
@@ -21,11 +21,10 @@
     "homepage": "",
     "dependencies": {
         "eslint": "8.23.1",
-        "eslint-plugin-json": "3.1.0",
-        "flux-shutdown-handler-api": "https://github.com/fluxfw/flux-shutdown-handler-api/archive/refs/tags/v2022-10-03-1.tar.gz"
+        "eslint-plugin-json": "3.1.0"
     },
-    "bin": {
-        "flux-js-lint": "bin/flux-js-lint.mjs"
+    "scripts": {
+        "postinstall": "bin/install-dependencies.sh"
     },
     "private": true
 }
