@@ -1,11 +1,10 @@
 #!/usr/bin/env node
 import { ESLint } from "eslint";
 import { fileURLToPath } from "node:url";
-import { ShutdownHandlerApi } from "../node_modules/flux-shutdown-handler-api/src/Adapter/Api/ShutdownHandlerApi.mjs";
 import { dirname, join } from "node:path";
 
 try {
-    const shutdown_handler_api = ShutdownHandlerApi.new();
+    const shutdown_handler_api = (await import("../node_modules/flux-shutdown-handler-api/src/Adapter/Api/ShutdownHandlerApi.mjs")).ShutdownHandlerApi.new();
     await shutdown_handler_api.init();
     shutdown_handler_api.getShutdownHandler();
 
