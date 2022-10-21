@@ -6,6 +6,12 @@ Changes:
 
 \-
 
+## v2022-10-21-1
+
+Changes:
+
+- Fix `no-extra-parens` and `no-mixed-operators` conflict
+
 ## v2022-10-19-2
 
 Changes:
