@@ -6,6 +6,12 @@ Changes:
 
 \-
 
+## v2022-10-24-1
+
+Changes:
+
+- NodeJS 19
+
 ## v2022-10-21-1
 
 Changes:
