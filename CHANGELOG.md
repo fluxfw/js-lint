@@ -6,6 +6,12 @@ Changes:
 
 \-
 
+## v2022-11-01-1
+
+Changes:
+
+- Enable `worker`
+
 ## v2022-10-28-1
 
 Changes:
