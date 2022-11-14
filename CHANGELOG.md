@@ -6,6 +6,12 @@ Changes:
 
 \-
 
+## v2022-11-14-1
+
+Changes:
+
+- Use `node:path/posix`
+
 ## v2022-11-01-1
 
 Changes:
