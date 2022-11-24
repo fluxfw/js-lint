@@ -3,9 +3,9 @@ import { ESLint } from "eslint";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path/posix";
 
+let shutdown_handler = null;
 try {
-    const shutdown_handler_api = (await import("../../flux-shutdown-handler-api/src/Adapter/Api/ShutdownHandlerApi.mjs")).ShutdownHandlerApi.new();
-    await shutdown_handler_api.getShutdownHandler();
+    shutdown_handler = await (await import("../../flux-shutdown-handler-api/src/Adapter/Api/ShutdownHandlerApi.mjs")).ShutdownHandlerApi.new().getShutdownHandler();
 
     const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -28,10 +28,18 @@ try {
     console.log(result);
 
     if (result.length > 0) {
-        process.exit(1);
+        await shutdown_handler.shutdown(
+            1
+        );
     }
 } catch (error) {
     console.error(error);
 
-    process.exit(1);
+    if (shutdown_handler !== null) {
+        await shutdown_handler.shutdown(
+            1
+        );
+    } else {
+        process.exit(1);
+    }
 }
