@@ -4,8 +4,7 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path/posix";
 
 try {
-    const shutdown_handler_api = (await import("../node_modules/flux-shutdown-handler-api/src/Adapter/Api/ShutdownHandlerApi.mjs")).ShutdownHandlerApi.new();
-    await shutdown_handler_api.init();
+    const shutdown_handler_api = (await import("../../flux-shutdown-handler-api/src/Adapter/Api/ShutdownHandlerApi.mjs")).ShutdownHandlerApi.new();
     await shutdown_handler_api.getShutdownHandler();
 
     const __dirname = dirname(fileURLToPath(import.meta.url));

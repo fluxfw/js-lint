@@ -6,6 +6,12 @@ Changes:
 
 \-
 
+## v2022-11-24-1
+
+Changes:
+
+- bin
+
 ## v2022-11-14-1
 
 Changes:
