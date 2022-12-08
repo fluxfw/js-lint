@@ -12,4 +12,4 @@ installDependency() {
     (mkdir -p "$node_modules/$1" && cd "$node_modules/$1" && wget -O - "$2" | tar -xz --strip-components=1)
 }
 
-installDependency flux-shutdown-handler-api https://github.com/fluxfw/flux-shutdown-handler-api/archive/refs/tags/v2022-11-24-1.tar.gz
+installDependency flux-shutdown-handler-api https://github.com/fluxfw/flux-shutdown-handler-api/archive/refs/tags/v2022-12-08-1.tar.gz
