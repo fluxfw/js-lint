@@ -1,0 +1,20 @@
+{
+    "version": "2022-12-09-1",
+    "description": "My eslint configuration and runner",
+    "topics": [
+        "ci",
+        "config",
+        "configuration",
+        "docker",
+        "eslint",
+        "gitlab",
+        "javascript",
+        "js",
+        "lint",
+        "node",
+        "nodejs",
+        "run",
+        "runner"
+    ],
+    "homepage": ""
+}
