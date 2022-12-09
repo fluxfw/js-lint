@@ -1,31 +1,8 @@
 {
-    "name": "flux-js-lint",
-    "productName": "flux-js-lint",
-    "version": "2022-12-08-1",
-    "description": "My eslint configuration and runner",
-    "keywords": [
-        "ci",
-        "config",
-        "configuration",
-        "docker",
-        "eslint",
-        "gitlab",
-        "javascript",
-        "js",
-        "lint",
-        "node",
-        "nodejs",
-        "run",
-        "runner"
-    ],
-    "homepage": "",
     "dependencies": {
         "eslint": "8.26.0",
         "eslint-plugin-jsdoc": "39.3.23",
         "eslint-plugin-json": "3.1.0"
-    },
-    "scripts": {
-        "postinstall": "bin/install-dependencies.sh"
     },
     "private": true
 }
