@@ -6,6 +6,12 @@ Changes:
 
 \-
 
+## v2022-12-14-1
+
+Changes:
+
+- Force curly
+
 ## v2022-12-09-1
 
 Changes:

@@ -41,7 +41,7 @@
         "consistent-return": ["off"],
         "consistent-this": ["off"],
         "constructor-super": ["error"],
-        "curly": ["off"],
+        "curly": ["error", "all"],
         "default-case-last": ["error"],
         "default-case": ["error"],
         "default-param-last": ["off"],
