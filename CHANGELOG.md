@@ -6,6 +6,12 @@ Changes:
 
 \-
 
+## v2023-01-10-1
+
+Changes:
+
+- Update `eslint`
+
 ## v2022-12-14-1
 
 Changes:
