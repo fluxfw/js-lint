@@ -1,7 +1,7 @@
 {
     "dependencies": {
-        "eslint": "8.26.0",
-        "eslint-plugin-jsdoc": "39.3.23",
+        "eslint": "8.31.0",
+        "eslint-plugin-jsdoc": "39.6.4",
         "eslint-plugin-json": "3.1.0"
     },
     "private": true
