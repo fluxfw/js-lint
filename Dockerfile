@@ -17,6 +17,3 @@ USER node:node
 ENTRYPOINT []
 
 COPY --from=build /build /
-
-ARG COMMIT_SHA
-LABEL org.opencontainers.image.revision="$COMMIT_SHA"
