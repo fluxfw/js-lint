@@ -8,6 +8,11 @@ try {
     shutdown_handler = await (await import("../../flux-shutdown-handler-api/src/Adapter/Api/ShutdownHandlerApi.mjs")).ShutdownHandlerApi.new()
         .getShutdownHandler();
 
+    const path = process.argv[2] ?? null;
+    if (path === null) {
+        throw new Error("Please pass a path");
+    }
+
     const __dirname = dirname(fileURLToPath(import.meta.url));
 
     const eslint = new ESLint({
@@ -24,7 +29,7 @@ try {
         useEslintrc: false
     });
 
-    const result = (await eslint.loadFormatter()).format(await eslint.lintFiles(process.cwd()));
+    const result = (await eslint.loadFormatter()).format(await eslint.lintFiles(path));
 
     console.log(result);
 

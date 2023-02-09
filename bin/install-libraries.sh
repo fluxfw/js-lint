@@ -2,12 +2,13 @@
 
 set -e
 
-root="`dirname "$0"`/.."
+bin="`dirname "$0"`"
+root="$bin/.."
 libs="$root/.."
 
 checkAlreadyInstalled() {
     if [ `ls "$libs" | wc -l` != "1" ]; then
-        echo "Already installed"
+        echo "Already installed" >&2
         exit 1
     fi
 }
@@ -24,4 +25,4 @@ checkAlreadyInstalled
 
 installNodeModules
 
-installLibrary flux-shutdown-handler-api https://github.com/fluxfw/flux-shutdown-handler-api/archive/refs/tags/v2022-12-08-1.tar.gz
+installLibrary flux-shutdown-handler-api https://github.com/fluxfw/flux-shutdown-handler-api/archive/refs/tags/v2023-02-09-1.tar.gz

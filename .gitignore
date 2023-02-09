@@ -6,7 +6,6 @@
 !.dockerignore
 !.eslintrc.json
 !.gitignore
-!.gitlab-ci.yml
 !CHANGELOG.md
 !Dockerfile
 !metadata.json
