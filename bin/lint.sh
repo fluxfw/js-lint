@@ -4,5 +4,6 @@ set -e
 
 bin="`dirname "$0"`"
 root="$bin/.."
+local_bin="$root/.local/bin"
 
-flux-js-lint "$root"
+"$local_bin/flux-js-lint.sh" "$root"
