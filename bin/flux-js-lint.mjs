@@ -31,7 +31,8 @@ try {
 
     const result = (await eslint.loadFormatter()).format(await eslint.lintFiles(path));
 
-    console.log(result);
+    process.stdout.write(`${result}
+`);
 
     if (result.length > 0) {
         await shutdown_handler.shutdown(
