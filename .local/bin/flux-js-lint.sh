@@ -20,4 +20,4 @@ tag="`get-release-tag "$root"`"
 path_host="`realpath "$path"`"
 path_volume="/code/`basename "$path_host"`"
 
-docker run --rm --network none -u "`id -u`":"`id -g`" -v "$path_host":"$path_volume":ro "$image:$tag" flux-js-lint "$path_volume" "$@"
+docker run --rm -it --network none -u "`id -u`":"`id -g`" -v "$path_host":"$path_volume":ro "$image:$tag" flux-js-lint "$path_volume" "$@"
