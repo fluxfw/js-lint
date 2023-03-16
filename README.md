@@ -13,5 +13,5 @@ My eslint configuration and runner
 ### flux-js-lint
 
 ```shell
-flux-js-lint
+flux-js-lint .
 ```
