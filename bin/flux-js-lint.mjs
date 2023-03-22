@@ -12,10 +12,10 @@ try {
         throw new Error("Please pass a path");
     }
 
-    const __dirname = dirname(fileURLToPath(import.meta.url));
+    const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 
     const eslint = new ESLint({
-        cwd: join(__dirname, ".."),
+        cwd: root,
         errorOnUnmatchedPattern: false,
         extensions: [
             ".cjs",
@@ -24,7 +24,7 @@ try {
             ".mjs"
         ],
         globInputPaths: false,
-        overrideConfigFile: join(__dirname, "..", ".eslintrc.json"),
+        overrideConfigFile: join(root, ".eslintrc.json"),
         useEslintrc: false
     });
 
