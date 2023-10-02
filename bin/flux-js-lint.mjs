@@ -30,8 +30,7 @@ try {
 
     const result = (await eslint.loadFormatter()).format(await eslint.lintFiles(path));
 
-    process.stdout.write(`${result}
-`);
+    console.log(result);
 
     if (result.length > 0) {
         await flux_shutdown_handler.shutdown(

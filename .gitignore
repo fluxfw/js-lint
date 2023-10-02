@@ -8,5 +8,5 @@
 !.gitignore
 !CHANGELOG.md
 !Dockerfile
-!metadata.json
 !README.md
+!version
