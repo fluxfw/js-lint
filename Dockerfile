@@ -1,20 +1,20 @@
 FROM node:20-alpine AS build
 
-COPY bin/install-libraries.sh /build/flux-js-lint/libs/flux-js-lint/bin/install-libraries.sh
-RUN /build/flux-js-lint/libs/flux-js-lint/bin/install-libraries.sh
+COPY bin/install-libraries.sh /build/opt/flux-js-lint/libs/flux-js-lint/bin/install-libraries.sh
+RUN /build/opt/flux-js-lint/libs/flux-js-lint/bin/install-libraries.sh
 
-RUN ln -s libs/flux-js-lint/bin /build/flux-js-lint/bin
+RUN ln -s libs/flux-js-lint/bin /build/opt/flux-js-lint/bin
 
-COPY . /build/flux-js-lint/libs/flux-js-lint
+COPY . /build/opt/flux-js-lint/libs/flux-js-lint
 
-RUN mkdir -p /build/flux-js-lint/.local/bin && for bin in /build/flux-js-lint/bin/*.mjs; do ln -s "../../bin/`basename "$bin"`" "/build/flux-js-lint/.local/bin/`basename "${bin%.*}"`"; done
+RUN unlink /build/opt/flux-js-lint/bin/install-libraries.sh
+
+RUN mkdir -p /build/usr/local/bin && (cd /build/opt/flux-js-lint/bin/PATH && for bin in *; do ln -s "../../../opt/flux-js-lint/bin/PATH/$bin" "/build/usr/local/bin/$bin"; done)
 
 FROM node:20-alpine
 
-ENV PATH "/flux-js-lint/.local/bin:$PATH"
-
 USER node:node
 
-ENTRYPOINT []
+ENTRYPOINT ["flux-js-lint"]
 
 COPY --from=build /build /

@@ -4,9 +4,7 @@ My eslint configuration and runner
 
 ## Installation
 
-```shell
-./bin/install-to-home-local-bin.sh
-```
+Add the files in [bin/PATH/host](bin/PATH/host) to your PATH
 
 ## Commands
 

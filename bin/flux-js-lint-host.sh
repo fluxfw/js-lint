@@ -9,8 +9,8 @@ if [ -z "$path" ]; then
 fi
 shift
 
-local_bin="`dirname "$(realpath "$0")"`"
-root="$local_bin/../.."
+bin="`dirname "$(realpath "$0")"`"
+root="$bin/.."
 
 name="`basename "$(realpath "$root")"`"
 host="${FLUX_PUBLISH_DOCKER_HOST:=}"
@@ -20,6 +20,6 @@ image="$host_with_slash$user/$name"
 tag="v`echo -n "$(cat "$root/version")"`"
 
 path_host="`realpath "$path"`"
-path_volume="/code/`basename "$path_host"`"
+path_volume="/host/`basename "$path_host"`"
 
-docker run --rm -it --network none -u "`id -u`":"`id -g`" -v "$path_host":"$path_volume":ro "$image:$tag" flux-js-lint "$path_volume" "$@"
+docker run --rm -it --network none -u "`id -u`":"`id -g`" -v "$path_host":"$path_volume":ro "$image:$tag" "$path_volume" "$@"
