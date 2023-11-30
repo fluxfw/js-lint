@@ -13,8 +13,10 @@ checkAlreadyInstalled() {
     fi
 }
 
-installLibrary() {
+installArchiveLibrary() {
     dest="$libs/$1"
+
+    echo "Install archive library $2 to $dest"
 
     while true; do 
         rm -rf "$dest" && mkdir -p "$dest"
@@ -35,8 +37,28 @@ installLibrary() {
     done
 }
 
+installNpmLibrary() {
+    dest="$libs/$1"
+    dest_node_modules="$libs/node_modules/$1"
+
+    echo "Install npm library $1@$2 to $dest_node_modules"
+
+    mkdir -p "$dest"
+    (cd "$dest" && npm install --prefix . --no-save --omit=dev --omit=optional --omit=peer "$1@$2")
+
+    mkdir -p "`dirname "$dest_node_modules"`"
+    mv "$dest/node_modules/$1" "$dest_node_modules"
+    rm -rf "$dest/node_modules/.bin"
+    mv "$dest/node_modules" "$dest_node_modules/node_modules"
+    rmdir "$dest"
+}
+
 checkAlreadyInstalled
 
-(cd "$libs" && npm install --no-save eslint@8.31.0 eslint-plugin-jsdoc@39.6.4 eslint-plugin-json@3.1.0)
+installArchiveLibrary flux-shutdown-handler https://github.com/fluxfw/flux-shutdown-handler/archive/refs/tags/v2023-03-16-1.tar.gz
 
-installLibrary flux-shutdown-handler https://github.com/fluxfw/flux-shutdown-handler/archive/refs/tags/v2023-03-16-1.tar.gz
+installNpmLibrary eslint 8.31.0
+
+installNpmLibrary eslint-plugin-jsdoc 39.6.4
+
+installNpmLibrary eslint-plugin-json 3.1.0
