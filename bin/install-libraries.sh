@@ -55,14 +55,14 @@ installNpmLibrary() {
 
 checkAlreadyInstalled
 
-installArchiveLibrary flux-pwa-generator https://github.com/fluxfw/flux-pwa-generator/archive/refs/tags/v2023-12-04-2.tar.gz
+installArchiveLibrary flux-pwa-generator https://github.com/fluxfw/flux-pwa-generator/archive/refs/tags/v2023-12-04-3.tar.gz
 
 installArchiveLibrary flux-shutdown-handler https://github.com/fluxfw/flux-shutdown-handler/archive/refs/tags/v2023-03-16-1.tar.gz
-
-installArchiveLibrary uglify-js https://registry.npmjs.org/uglify-js/-/uglify-js-3.17.4.tgz
 
 installNpmLibrary eslint 8.31.0
 
 installNpmLibrary eslint-plugin-jsdoc 39.6.4
 
 installNpmLibrary eslint-plugin-json 3.1.0
+
+installNpmLibrary uglify-js 3.17.4
