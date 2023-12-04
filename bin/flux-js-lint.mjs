@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-import { ESLint } from "eslint";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path/posix";
 
@@ -14,7 +13,7 @@ try {
 
     const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 
-    const eslint = new ESLint({
+    const eslint = new (await import("eslint")).ESLint({
         cwd: root,
         errorOnUnmatchedPattern: false,
         extensions: [
@@ -24,7 +23,11 @@ try {
             ".mjs"
         ],
         globInputPaths: false,
-        overrideConfigFile: join(root, ".eslintrc.json"),
+        overrideConfig: (await import("../.eslintrc.json", {
+            assert: {
+                type: "json"
+            }
+        })).default,
         useEslintrc: false
     });
 
