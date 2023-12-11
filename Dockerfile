@@ -10,14 +10,12 @@ FROM base AS build
 
 RUN apk add --no-cache npm
 
-COPY bin/install-libraries.sh /build/opt/_/flux-js-lint/bin/install-libraries.sh
-RUN /build/opt/_/flux-js-lint/bin/install-libraries.sh
+COPY bin/install-libraries.sh /build/flux-js-lint/bin/install-libraries.sh
+RUN /build/flux-js-lint/bin/install-libraries.sh
 
-COPY . /build/opt/_/flux-js-lint
+COPY . /build/flux-js-lint
 
-RUN mkdir -p /build/usr/local/bin && (cd /build/opt/_/flux-js-lint/bin/PATH && for bin in *; do ln -s "../../../opt/flux-js-lint/bin/$(basename "`readlink "$bin"`")" "/build/usr/local/bin/$bin"; done)
-
-RUN /build/opt/_/flux-js-lint/bin/build.mjs prod && mv /build/opt/_/flux-js-lint /build/opt/flux-js-lint && mv /build/opt/_/node_modules /build/opt/flux-js-lint/node_modules && rmdir /build/opt/_
+RUN /build/flux-js-lint/bin/build.mjs
 
 FROM base
 
@@ -25,4 +23,4 @@ USER node:node
 
 ENTRYPOINT ["flux-js-lint"]
 
-COPY --from=build /build /
+COPY --from=build /build/flux-js-lint/build /

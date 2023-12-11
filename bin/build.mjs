@@ -1,69 +1,123 @@
 #!/usr/bin/env node
 import { fileURLToPath } from "node:url";
-import { basename, dirname, extname, join } from "node:path/posix";
+import { basename, dirname, extname, join, relative } from "node:path/posix";
+import { cp, mkdir, symlink } from "node:fs/promises";
 
 let flux_shutdown_handler = null;
 try {
     flux_shutdown_handler = (await import("../../flux-shutdown-handler/src/FluxShutdownHandler.mjs")).FluxShutdownHandler.new();
 
-    const mode = process.argv[2] ?? null;
-    if (![
-        "prod",
-        "dev"
-    ].includes(mode)) {
-        throw new Error("Please pass prod or dev");
-    }
-    const dev_mode = mode === "dev";
+    const dev_mode = (process.argv[2] ?? "prod") === "dev";
 
     const bin_folder = dirname(fileURLToPath(import.meta.url));
+
     const root_folder = join(bin_folder, "..");
+
     const libs_folder = join(root_folder, "..");
+    const node_modules_folder = join(libs_folder, "node_modules");
+
+    const build_folder = join(root_folder, "build");
+
+    const build_root_folder = join(build_folder, "opt", basename(root_folder));
+
+    const build_node_modules_folder = join(build_root_folder, "node_modules");
+
+    const build_bin_folder = join(build_root_folder, "bin");
+    const build_local_bin_folder = join(build_folder, "usr", "local", "bin");
 
     const general_file_filter = root_file => ![
         "md",
         "sh"
-    ].includes(extname(root_file).substring(1).toLowerCase()) && (!root_file.startsWith("node_modules/") ? !basename(root_file).toLowerCase().includes("template") : true);
+    ].includes(extname(root_file).substring(1).toLowerCase());
+
+    const bundler = (await import("../../flux-pwa-generator/src/Bundler.mjs")).Bundler.new();
+    const minifier = (await import("../../flux-pwa-generator/src/Minifier.mjs")).Minifier.new();
+
+    for (const folder of [
+        build_bin_folder,
+        build_local_bin_folder
+    ]) {
+        console.log(`Create folder ${folder}`);
+
+        await mkdir(folder, {
+            recursive: true
+        });
+    }
+
+    for (const [
+        src,
+        dest
+    ] of [
+            [
+                join(bin_folder, "flux-js-lint.mjs"),
+                join(build_bin_folder, "flux-js-lint.mjs")
+            ]
+        ]) {
+        await bundler.bundle(
+            src,
+            dest,
+            async code => minifier.minifyCSS(
+                code
+            ),
+            async code => minifier.minifyXML(
+                code
+            ),
+            dev_mode
+        );
+    }
 
     if (!dev_mode) {
-        await (await import("../../flux-pwa-generator/src/Bundler.mjs")).Bundler.new()
-            .bundle(
-                join(bin_folder, "flux-js-lint.mjs"),
-                join(bin_folder, "flux-js-lint.mjs"),
-                null,
-                null,
-                dev_mode
-            );
+        await minifier.minifyFolder(
+            build_root_folder
+        );
+    }
 
-        const {
-            DeleteEmptyFoldersOrInvalidSymlinks
-        } = await import("../../flux-pwa-generator/src/DeleteEmptyFoldersOrInvalidSymlinks.mjs");
-        const {
-            Minifier
-        } = await import("../../flux-pwa-generator/src/Minifier.mjs");
+    for (const [
+        src,
+        dest
+    ] of [
+            [
+                join(node_modules_folder, "eslint"),
+                join(build_node_modules_folder, "eslint")
+            ],
+            [
+                join(node_modules_folder, "eslint-plugin-jsdoc"),
+                join(build_node_modules_folder, "eslint-plugin-jsdoc")
+            ],
+            [
+                join(node_modules_folder, "eslint-plugin-json"),
+                join(build_node_modules_folder, "eslint-plugin-json")
+            ]
+        ]) {
+        console.log(`Copy ${src} to ${dest}}`);
 
-        await (await import("../../flux-pwa-generator/src/DeleteExcludedFiles.mjs")).DeleteExcludedFiles.new()
-            .deleteExcludedFiles(
-                libs_folder,
-                root_file => [
-                    "flux-js-lint/bin/flux-js-lint.mjs"
-                ].includes(root_file) || ([
-                    "node_modules/eslint/",
-                    "node_modules/eslint-plugin-jsdoc/",
-                    "node_modules/eslint-plugin-json/"
-                ].some(_root_file => root_file.startsWith(_root_file)) && general_file_filter(
-                    root_file
-                ))
-            );
+        await cp(src, dest, {
+            recursive: true
+        });
+    }
 
-        await DeleteEmptyFoldersOrInvalidSymlinks.new()
-            .deleteEmptyFoldersOrInvalidSymlinks(
-                libs_folder
-            );
+    await (await import("../../flux-pwa-generator/src/DeleteExcludedFiles.mjs")).DeleteExcludedFiles.new()
+        .deleteExcludedFiles(
+            build_node_modules_folder,
+            general_file_filter
+        );
+    await (await import("../../flux-pwa-generator/src/DeleteEmptyFoldersOrInvalidSymlinks.mjs")).DeleteEmptyFoldersOrInvalidSymlinks.new()
+        .deleteEmptyFoldersOrInvalidSymlinks(
+            build_node_modules_folder
+        );
 
-        await Minifier.new()
-            .minifyFolder(
-                root_folder
-            );
+    for (const [
+        src,
+        dest
+    ] of [
+            [
+                join(build_bin_folder, "flux-js-lint.mjs"),
+                join(build_local_bin_folder, "flux-js-lint")
+            ]
+        ]) {
+        console.log(`Create symlink ${src} to ${dest}`);
+
+        await symlink(relative(dirname(dest), src), dest);
     }
 } catch (error) {
     console.error(error);

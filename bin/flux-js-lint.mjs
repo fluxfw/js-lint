@@ -23,11 +23,7 @@ try {
             ".mjs"
         ],
         globInputPaths: false,
-        overrideConfig: (await import("../.eslintrc.json", {
-            assert: {
-                type: "json"
-            }
-        })).default,
+        overrideConfig: (await import("../src/ESLINT_CONFIG.mjs")).ESLINT_CONFIG,
         useEslintrc: false
     });
 

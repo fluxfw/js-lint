@@ -1,8 +1,9 @@
 *
 !bin
 !bin/**
+!src
+!src/**
 !.dockerignore
-!.eslintrc.json
 !.gitignore
 !CHANGELOG.md
 !Dockerfile

@@ -5,4 +5,4 @@ set -e
 bin="`dirname "$0"`"
 root="$bin/.."
 
-"$bin/PATH/host/flux-js-lint" "$root"
+"$bin/HOST_PATH/flux-js-lint" "$root"
