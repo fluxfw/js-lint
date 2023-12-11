@@ -1,24 +1,24 @@
 export const ESLINT_CONFIG = Object.freeze({
-    env: {
+    env: Object.freeze({
         browser: true,
         es2022: true,
         node: true,
         worker: true
-    },
-    extends: [
+    }),
+    extends: Object.freeze([
         "eslint:recommended"
-    ],
+    ]),
     noInlineConfig: true,
-    parserOptions: {
+    parserOptions: Object.freeze({
         ecmaVersion: "latest",
         sourceType: "module"
-    },
-    plugins: [
+    }),
+    plugins: Object.freeze([
         "jsdoc",
         "json"
-    ],
+    ]),
     reportUnusedDisableDirectives: true,
-    rules: {
+    rules: Object.freeze({
         "accessor-pairs": [
             "off"
         ],
@@ -1036,5 +1036,5 @@ export const ESLINT_CONFIG = Object.freeze({
         yoda: [
             "off"
         ]
-    }
+    })
 });
