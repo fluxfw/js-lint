@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { fileURLToPath } from "node:url";
-import { dirname, join } from "node:path/posix";
+import { dirname, join } from "node:path";
 
 let flux_shutdown_handler = null;
 try {
