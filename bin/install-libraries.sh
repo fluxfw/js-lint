@@ -53,7 +53,7 @@ installNpmLibrary() {
 
 checkAlreadyInstalled
 
-installArchiveLibrary flux-pwa-generator https://github.com/fluxfw/flux-pwa-generator/archive/refs/tags/v2023-12-21-1.tar.gz
+installArchiveLibrary flux-build-utils https://github.com/fluxfw/flux-build-utils/archive/refs/tags/v2024-01-09-1.tar.gz
 
 installArchiveLibrary flux-shutdown-handler https://github.com/fluxfw/flux-shutdown-handler/archive/refs/tags/v2023-03-16-1.tar.gz
 

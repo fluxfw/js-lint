@@ -38,8 +38,8 @@ try {
         "package-lock.json"
     ].includes(basename(root_file))) || basename(root_file).toLowerCase().includes("license");
 
-    const bundler = (await import("../../flux-pwa-generator/src/Bundler.mjs")).Bundler.new();
-    const minifier = (await import("../../flux-pwa-generator/src/Minifier.mjs")).Minifier.new();
+    const bundler = (await import("../../flux-build-utils/src/Bundler.mjs")).Bundler.new();
+    const minifier = (await import("../../flux-build-utils/src/Minifier.mjs")).Minifier.new();
 
     if (existsSync(build_folder)) {
         throw new Error("Already built");
@@ -68,6 +68,9 @@ try {
         await bundler.bundle(
             src,
             dest,
+            [
+                "eslint"
+            ],
             async code => minifier.minifyCSS(
                 code
             ),
@@ -108,12 +111,12 @@ try {
         });
     }
 
-    await (await import("../../flux-pwa-generator/src/DeleteExcludedFiles.mjs")).DeleteExcludedFiles.new()
+    await (await import("../../flux-build-utils/src/DeleteExcludedFiles.mjs")).DeleteExcludedFiles.new()
         .deleteExcludedFiles(
             build_node_modules_folder,
             node_modules_file_filter
         );
-    await (await import("../../flux-pwa-generator/src/DeleteEmptyFoldersOrInvalidSymlinks.mjs")).DeleteEmptyFoldersOrInvalidSymlinks.new()
+    await (await import("../../flux-build-utils/src/DeleteEmptyFoldersOrInvalidSymlinks.mjs")).DeleteEmptyFoldersOrInvalidSymlinks.new()
         .deleteEmptyFoldersOrInvalidSymlinks(
             build_node_modules_folder
         );
