@@ -2,19 +2,19 @@
 
 set -e
 
-bin="`dirname "$0"`"
-root="$bin/.."
-libs="$root/.."
+bin_folder="`dirname "$0"`"
+root_folder="$bin_folder/.."
+node_modules_folder="$root_folder/node_modules"
 
 checkAlreadyInstalled() {
-    if [ `ls "$libs" | wc -l` != "1" ]; then
+    if [ -d "$node_modules_folder" ]; then
         echo "Already installed" >&2
         exit 1
     fi
 }
 
 installArchiveLibrary() {
-    dest="$libs/$1"
+    dest="$node_modules_folder/$1"
 
     echo "Install archive library $2 to $dest"
 
@@ -37,30 +37,30 @@ installArchiveLibrary() {
 }
 
 installNpmLibrary() {
-    dest="$libs/$1"
-    dest_node_modules="$libs/node_modules/$1"
+    dest="$node_modules_folder/$1"
+    dest_temp="$node_modules_folder/_$1"
 
     echo "Install npm library $1@$2 to $dest_node_modules"
 
-    mkdir -p "$dest"
-    (cd "$dest" && npm install --prefix . --no-save --omit=dev --omit=optional --omit=peer "$1@$2")
+    mkdir -p "$dest_temp"
+    (cd "$dest_temp" && npm install --prefix . --no-save --omit=dev --omit=optional --omit=peer "$1@$2")
 
-    mkdir -p "`dirname "$dest_node_modules"`"
-    mv "$dest/node_modules/$1" "$dest_node_modules"
-    mv "$dest/node_modules" "$dest_node_modules/node_modules"
-    rmdir "$dest"
+    mkdir -p "`dirname "$dest"`"
+    mv "$dest_temp/node_modules/$1" "$dest"
+    mv "$dest_temp/node_modules" "$dest/node_modules"
+    rmdir "$dest_temp"
 }
 
 checkAlreadyInstalled
 
-installArchiveLibrary flux-build-utils https://github.com/fluxfw/flux-build-utils/archive/refs/tags/v2024-01-09-1.tar.gz
+installArchiveLibrary flux-build-utils https://github.com/fluxfw/flux-build-utils/archive/refs/tags/v2024-01-15-1.tar.gz
 
 installArchiveLibrary flux-shutdown-handler https://github.com/fluxfw/flux-shutdown-handler/archive/refs/tags/v2023-03-16-1.tar.gz
+
+installArchiveLibrary uglify-js https://registry.npmjs.org/uglify-js/-/uglify-js-3.17.4.tgz
 
 installNpmLibrary eslint 8.31.0
 
 installNpmLibrary eslint-plugin-jsdoc 39.6.4
 
 installNpmLibrary eslint-plugin-json 3.1.0
-
-installNpmLibrary uglify-js 3.17.4

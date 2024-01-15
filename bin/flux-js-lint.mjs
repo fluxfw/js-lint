@@ -4,7 +4,7 @@ import { dirname, join } from "node:path";
 
 let flux_shutdown_handler = null;
 try {
-    flux_shutdown_handler = (await import("../../flux-shutdown-handler/src/FluxShutdownHandler.mjs")).FluxShutdownHandler.new();
+    flux_shutdown_handler = (await import("flux-shutdown-handler/src/FluxShutdownHandler.mjs")).FluxShutdownHandler.new();
 
     const path = process.argv[2] ?? null;
     if (path === null) {
@@ -23,7 +23,7 @@ try {
             ".mjs"
         ],
         globInputPaths: false,
-        overrideConfig: (await import("../src/ESLINT_CONFIG.mjs")).ESLINT_CONFIG,
+        overrideConfig: (await import("../.eslintrc.json", { with: { type: "json" } })).default,
         useEslintrc: false
     });
 

@@ -1,32 +1,32 @@
-export const ESLINT_CONFIG = Object.freeze({
-    env: Object.freeze({
-        browser: true,
-        es2022: true,
-        node: true,
-        worker: true
-    }),
-    extends: Object.freeze([
+{
+    "env": {
+        "browser": true,
+        "es2022": true,
+        "node": true,
+        "worker": true
+    },
+    "extends": [
         "eslint:recommended"
-    ]),
-    noInlineConfig: true,
-    parserOptions: Object.freeze({
-        ecmaVersion: "latest",
-        sourceType: "module"
-    }),
-    plugins: Object.freeze([
+    ],
+    "noInlineConfig": true,
+    "parserOptions": {
+        "ecmaVersion": "latest",
+        "sourceType": "module"
+    },
+    "plugins": [
         "jsdoc",
         "json"
-    ]),
-    reportUnusedDisableDirectives: true,
-    rules: Object.freeze({
+    ],
+    "reportUnusedDisableDirectives": true,
+    "rules": {
         "accessor-pairs": [
             "off"
         ],
         "array-bracket-newline": [
             "error",
             {
-                multiline: true,
-                minItems: 1
+                "multiline": true,
+                "minItems": 1
             }
         ],
         "array-bracket-spacing": [
@@ -39,8 +39,8 @@ export const ESLINT_CONFIG = Object.freeze({
         "array-element-newline": [
             "error",
             {
-                multiline: true,
-                minItems: 1
+                "multiline": true,
+                "minItems": 1
             }
         ],
         "arrow-body-style": [
@@ -54,8 +54,8 @@ export const ESLINT_CONFIG = Object.freeze({
         "arrow-spacing": [
             "error",
             {
-                before: true,
-                after: true
+                "before": true,
+                "after": true
             }
         ],
         "block-scoped-var": [
@@ -67,7 +67,7 @@ export const ESLINT_CONFIG = Object.freeze({
         "brace-style": [
             "off"
         ],
-        camelcase: [
+        "camelcase": [
             "off"
         ],
         "capitalized-comments": [
@@ -83,15 +83,15 @@ export const ESLINT_CONFIG = Object.freeze({
         "comma-spacing": [
             "error",
             {
-                before: false,
-                after: true
+                "before": false,
+                "after": true
             }
         ],
         "comma-style": [
             "error",
             "last"
         ],
-        complexity: [
+        "complexity": [
             "off"
         ],
         "computed-property-spacing": [
@@ -106,7 +106,7 @@ export const ESLINT_CONFIG = Object.freeze({
         "constructor-super": [
             "error"
         ],
-        curly: [
+        "curly": [
             "error",
             "all"
         ],
@@ -129,7 +129,7 @@ export const ESLINT_CONFIG = Object.freeze({
             "error",
             "always"
         ],
-        eqeqeq: [
+        "eqeqeq": [
             "off"
         ],
         "for-direction": [
@@ -179,11 +179,11 @@ export const ESLINT_CONFIG = Object.freeze({
             "error",
             "beside"
         ],
-        indent: [
+        "indent": [
             "error",
             4,
             {
-                SwitchCase: 1
+                "SwitchCase": 1
             }
         ],
         "init-declarations": [
@@ -282,13 +282,13 @@ export const ESLINT_CONFIG = Object.freeze({
         "jsdoc/require-jsdoc": [
             "error",
             {
-                require: {
-                    ArrowFunctionExpression: false,
-                    ClassDeclaration: false,
-                    ClassExpression: false,
-                    FunctionDeclaration: true,
-                    FunctionExpression: true,
-                    MethodDefinition: true
+                "require": {
+                    "ArrowFunctionExpression": false,
+                    "ClassDeclaration": false,
+                    "ClassExpression": false,
+                    "FunctionDeclaration": true,
+                    "FunctionExpression": true,
+                    "MethodDefinition": true
                 }
             }
         ],
@@ -319,8 +319,8 @@ export const ESLINT_CONFIG = Object.freeze({
         "jsdoc/require-returns": [
             "error",
             {
-                forceRequireReturn: true,
-                forceReturnsWithAsync: true
+                "forceRequireReturn": true,
+                "forceReturnsWithAsync": true
             }
         ],
         "jsdoc/require-returns-check": [
@@ -351,7 +351,7 @@ export const ESLINT_CONFIG = Object.freeze({
         "json/*": [
             "error",
             {
-                allowComments: false
+                "allowComments": false
             }
         ],
         "jsx-quotes": [
@@ -536,7 +536,7 @@ export const ESLINT_CONFIG = Object.freeze({
             "error",
             "all",
             {
-                nestedBinaryExpressions: false
+                "nestedBinaryExpressions": false
             }
         ],
         "no-extra-semi": [
@@ -626,9 +626,9 @@ export const ESLINT_CONFIG = Object.freeze({
         "no-multiple-empty-lines": [
             "error",
             {
-                max: 1,
-                maxBOF: 0,
-                maxEOF: 0
+                "max": 1,
+                "maxBOF": 0,
+                "maxEOF": 0
             }
         ],
         "no-negated-condition": [
@@ -917,11 +917,11 @@ export const ESLINT_CONFIG = Object.freeze({
             "error",
             "as-needed"
         ],
-        quotes: [
+        "quotes": [
             "error",
             "double"
         ],
-        radix: [
+        "radix": [
             "off"
         ],
         "require-atomic-updates": [
@@ -940,15 +940,15 @@ export const ESLINT_CONFIG = Object.freeze({
             "error",
             "never"
         ],
-        semi: [
+        "semi": [
             "error",
             "always"
         ],
         "semi-spacing": [
             "error",
             {
-                before: false,
-                after: true
+                "before": false,
+                "after": true
             }
         ],
         "semi-style": [
@@ -958,8 +958,8 @@ export const ESLINT_CONFIG = Object.freeze({
         "sort-imports": [
             "error",
             {
-                ignoreCase: true,
-                memberSyntaxSortOrder: [
+                "ignoreCase": true,
+                "memberSyntaxSortOrder": [
                     "all",
                     "single",
                     "multiple",
@@ -991,14 +991,14 @@ export const ESLINT_CONFIG = Object.freeze({
         "spaced-comment": [
             "off"
         ],
-        strict: [
+        "strict": [
             "off"
         ],
         "switch-colon-spacing": [
             "error",
             {
-                after: true,
-                before: false
+                "after": true,
+                "before": false
             }
         ],
         "symbol-description": [
@@ -1033,8 +1033,8 @@ export const ESLINT_CONFIG = Object.freeze({
         "yield-star-spacing": [
             "off"
         ],
-        yoda: [
+        "yoda": [
             "off"
         ]
-    })
-});
+    }
+}
