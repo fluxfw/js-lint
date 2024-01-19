@@ -1,6 +1,6 @@
 #!/usr/bin/env node
+import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-import { dirname, join } from "node:path";
 
 let flux_shutdown_handler = null;
 try {
@@ -11,10 +11,8 @@ try {
         throw new Error("Please pass a path");
     }
 
-    const root = join(dirname(fileURLToPath(import.meta.url)), "..");
-
     const eslint = new (await import("eslint")).ESLint({
-        cwd: root,
+        cwd: dirname(fileURLToPath(import.meta.url)),
         errorOnUnmatchedPattern: false,
         extensions: [
             ".cjs",

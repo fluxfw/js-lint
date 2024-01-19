@@ -22,8 +22,7 @@ try {
 
     const build_node_modules_folder = join(build_root_folder, "node_modules");
 
-    const build_bin_folder = join(build_root_folder, "bin");
-    const build_local_bin_folder = join(build_folder, "usr", "local", "bin");
+    const build_usr_local_bin_folder = join(build_folder, "usr", "local", "bin");
 
     const node_modules_file_filter = root_file => ([
         "42",
@@ -45,8 +44,8 @@ try {
     }
 
     for (const folder of [
-        build_bin_folder,
-        build_local_bin_folder
+        build_root_folder,
+        build_usr_local_bin_folder
     ]) {
         console.log(`Create folder ${folder}`);
 
@@ -61,7 +60,7 @@ try {
     ] of [
             [
                 join(bin_folder, "flux-js-lint.mjs"),
-                join(build_bin_folder, "flux-js-lint.mjs")
+                join(build_root_folder, "flux-js-lint.mjs")
             ]
         ]) {
         await bundler.bundle(
@@ -125,8 +124,8 @@ try {
         dest
     ] of [
             [
-                join(build_bin_folder, "flux-js-lint.mjs"),
-                join(build_local_bin_folder, "flux-js-lint")
+                join(build_root_folder, "flux-js-lint.mjs"),
+                join(build_usr_local_bin_folder, "flux-js-lint")
             ]
         ]) {
         console.log(`Create symlink ${src} to ${dest}`);
