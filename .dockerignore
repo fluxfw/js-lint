@@ -1,5 +1,4 @@
 *
-!bin/build.mjs
-!bin/flux-js-lint.mjs
-!bin/install-libraries.sh
+!bin
+!bin/**
 !.eslintrc.json
