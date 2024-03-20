@@ -6,7 +6,7 @@ import { cp, mkdir, symlink } from "node:fs/promises";
 
 let flux_shutdown_handler = null;
 try {
-    flux_shutdown_handler = (await import("flux-shutdown-handler/src/FluxShutdownHandler.mjs")).FluxShutdownHandler.new();
+    flux_shutdown_handler = await (await import("flux-shutdown-handler/src/FluxShutdownHandler.mjs")).FluxShutdownHandler.new();
 
     const dev_mode = (process.argv[2] ?? "prod") === "dev";
 
@@ -36,8 +36,8 @@ try {
         "package-lock.json"
     ].includes(basename(root_file))) || basename(root_file).toLowerCase().includes("license");
 
-    const bundler = (await import("flux-build-utils/src/Bundler.mjs")).Bundler.new();
-    const minifier = (await import("flux-build-utils/src/Minifier.mjs")).Minifier.new();
+    const bundler = await (await import("flux-build-utils/src/Bundler.mjs")).Bundler.new();
+    const minifier = await (await import("flux-build-utils/src/Minifier.mjs")).Minifier.new();
 
     if (existsSync(build_folder)) {
         throw new Error("Already built");
@@ -109,12 +109,12 @@ try {
         });
     }
 
-    await (await import("flux-build-utils/src/DeleteExcludedFiles.mjs")).DeleteExcludedFiles.new()
+    await (await (await import("flux-build-utils/src/DeleteExcludedFiles.mjs")).DeleteExcludedFiles.new())
         .deleteExcludedFiles(
             build_node_modules_folder,
             node_modules_file_filter
         );
-    await (await import("flux-build-utils/src/DeleteEmptyFoldersOrInvalidSymlinks.mjs")).DeleteEmptyFoldersOrInvalidSymlinks.new()
+    await (await (await import("flux-build-utils/src/DeleteEmptyFoldersOrInvalidSymlinks.mjs")).DeleteEmptyFoldersOrInvalidSymlinks.new())
         .deleteEmptyFoldersOrInvalidSymlinks(
             build_node_modules_folder
         );
