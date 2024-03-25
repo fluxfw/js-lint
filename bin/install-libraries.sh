@@ -43,7 +43,7 @@ installNpmLibrary() {
     echo "Install npm library $1@$2 to $dest"
 
     mkdir -p "$dest_temp"
-    (cd "$dest_temp" && npm install --prefix . --no-save --omit=dev --omit=optional --omit=peer "$1@$2")
+    (cd "$dest_temp" && npm install --prefix . --no-save --omit=dev --omit=optional --omit=peer --no-audit --no-fund "$1@$2")
 
     mkdir -p "`dirname "$dest"`"
     mv "$dest_temp/node_modules/$1" "$dest"
