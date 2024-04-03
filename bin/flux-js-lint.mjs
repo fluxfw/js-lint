@@ -8,7 +8,7 @@ try {
 
     const path = process.argv[2] ?? null;
     if (path === null) {
-        throw new Error("Please pass a path");
+        throw new Error("Please pass a path!");
     }
 
     const eslint = new (await import("eslint")).ESLint({
