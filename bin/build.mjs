@@ -22,8 +22,6 @@ try {
 
     const build_node_modules_folder = join(build_root_folder, "node_modules");
 
-    const build_usr_local_bin_folder = join(build_folder, "usr", "local", "bin");
-
     const node_modules_file_filter = root_file => ([
         "42",
         "cjs",
@@ -41,17 +39,6 @@ try {
 
     if (existsSync(build_folder)) {
         throw new Error("Already built!");
-    }
-
-    for (const folder of [
-        build_root_folder,
-        build_usr_local_bin_folder
-    ]) {
-        console.log(`Create folder ${folder}`);
-
-        await mkdir(folder, {
-            recursive: true
-        });
     }
 
     for (const [
@@ -125,12 +112,18 @@ try {
     ] of [
             [
                 join(build_root_folder, "flux-js-lint.mjs"),
-                join(build_usr_local_bin_folder, "flux-js-lint")
+                join(build_folder, "usr", "local", "bin", "flux-js-lint")
             ]
         ]) {
         console.log(`Create symlink ${src} to ${dest}`);
 
-        await symlink(relative(dirname(dest), src), dest);
+        const dest_folder = dirname(dest);
+
+        await mkdir(dest_folder, {
+            recursive: true
+        });
+
+        await symlink(relative(dest_folder, src), dest);
     }
 } catch (error) {
     console.error(error);
