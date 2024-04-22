@@ -14,25 +14,9 @@ try {
 
     const root_folder = join(bin_folder, "..");
 
-    const node_modules_folder = join(root_folder, "node_modules");
-
     const build_folder = join(root_folder, "build");
 
     const build_root_folder = join(build_folder, "opt", basename(root_folder));
-
-    const build_node_modules_folder = join(build_root_folder, "node_modules");
-
-    const node_modules_file_filter = root_file => ([
-        "42",
-        "cjs",
-        "js",
-        "json",
-        "mjs",
-        "node"
-    ].includes(extname(root_file).substring(1).toLowerCase()) && ![
-        ".package-lock.json",
-        "package-lock.json"
-    ].includes(basename(root_file))) || basename(root_file).toLowerCase().includes("license");
 
     const bundler = await (await import("flux-build-utils/src/Bundler.mjs")).Bundler.new();
     const minifier = await (await import("flux-build-utils/src/Minifier.mjs")).Minifier.new();
@@ -77,16 +61,16 @@ try {
         dest
     ] of [
             [
-                join(node_modules_folder, "eslint"),
-                join(build_node_modules_folder, "eslint")
+                join(root_folder, "node_modules", "eslint"),
+                join(build_root_folder, "node_modules", "eslint")
             ],
             [
-                join(node_modules_folder, "eslint-plugin-jsdoc"),
-                join(build_node_modules_folder, "eslint-plugin-jsdoc")
+                join(root_folder, "node_modules", "eslint-plugin-jsdoc"),
+                join(build_root_folder, "node_modules", "eslint-plugin-jsdoc")
             ],
             [
-                join(node_modules_folder, "eslint-plugin-json"),
-                join(build_node_modules_folder, "eslint-plugin-json")
+                join(root_folder, "node_modules", "eslint-plugin-json"),
+                join(build_root_folder, "node_modules", "eslint-plugin-json")
             ]
         ]) {
         console.log(`Copy ${src} to ${dest}`);
@@ -98,12 +82,22 @@ try {
 
     await (await (await import("flux-build-utils/src/DeleteExcludedFiles.mjs")).DeleteExcludedFiles.new())
         .deleteExcludedFiles(
-            build_node_modules_folder,
-            node_modules_file_filter
+            join(build_root_folder, "node_modules"),
+            root_file => ([
+                "42",
+                "cjs",
+                "js",
+                "json",
+                "mjs",
+                "node"
+            ].includes(extname(root_file).substring(1).toLowerCase()) && ![
+                ".package-lock.json",
+                "package-lock.json"
+            ].includes(basename(root_file))) || basename(root_file).toLowerCase().includes("license")
         );
     await (await (await import("flux-build-utils/src/DeleteEmptyFoldersOrInvalidSymlinks.mjs")).DeleteEmptyFoldersOrInvalidSymlinks.new())
         .deleteEmptyFoldersOrInvalidSymlinks(
-            build_node_modules_folder
+            join(build_root_folder, "node_modules")
         );
 
     for (const [
