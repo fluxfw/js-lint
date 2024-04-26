@@ -1,37 +1,38 @@
 #!/usr/bin/env node
 import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
+import { FluxShutdownHandler } from "flux-shutdown-handler/src/FluxShutdownHandler.mjs";
 import { basename, dirname, extname, join, relative } from "node:path";
 import { cp, mkdir, symlink } from "node:fs/promises";
 
-let flux_shutdown_handler = null;
+const flux_shutdown_handler = await FluxShutdownHandler.new();
+
 try {
-    flux_shutdown_handler = await (await import("flux-shutdown-handler/src/FluxShutdownHandler.mjs")).FluxShutdownHandler.new();
+    const dev = (process.argv[2] ?? "prod") === "dev";
 
-    const dev_mode = (process.argv[2] ?? "prod") === "dev";
+    const src_bin_folder = dirname(fileURLToPath(import.meta.url));
+    const src_root_folder = join(src_bin_folder, "..");
+    const src_node_modules_folder = join(src_root_folder, "node_modules");
 
-    const bin_folder = dirname(fileURLToPath(import.meta.url));
-
-    const root_folder = join(bin_folder, "..");
-
-    const build_folder = join(root_folder, "build");
-
-    const build_root_folder = join(build_folder, "opt", basename(root_folder));
-
-    const bundler = await (await import("flux-build-utils/src/Bundler.mjs")).Bundler.new();
-    const minifier = await (await import("flux-build-utils/src/Minifier.mjs")).Minifier.new();
+    const build_folder = join(src_root_folder, "build");
+    const build_usr_folder = join(build_folder, "usr", "local");
+    const build_bin_folder = join(build_usr_folder, "bin");
+    const build_lib_folder = join(build_usr_folder, "lib", basename(src_root_folder));
+    const build_node_modules_folder = join(build_lib_folder, "node_modules");
 
     if (existsSync(build_folder)) {
         throw new Error("Already built!");
     }
 
+    const bundler = await (await import("flux-build-utils/src/Bundler.mjs")).Bundler.new();
+    const minifier = await (await import("flux-build-utils/src/Minifier.mjs")).Minifier.new();
     for (const [
         src,
         dest
     ] of [
             [
-                join(bin_folder, "flux-js-lint.mjs"),
-                join(build_root_folder, "flux-js-lint.mjs")
+                join(src_bin_folder, "flux-js-lint.mjs"),
+                join(build_lib_folder, "flux-js-lint.mjs")
             ]
         ]) {
         await bundler.bundle(
@@ -46,11 +47,11 @@ try {
             async code => minifier.minifyXML(
                 code
             ),
-            dev_mode
+            dev
         );
     }
 
-    if (!dev_mode) {
+    if (!dev) {
         await minifier.minifyFolder(
             build_folder
         );
@@ -61,16 +62,16 @@ try {
         dest
     ] of [
             [
-                join(root_folder, "node_modules", "eslint"),
-                join(build_root_folder, "node_modules", "eslint")
+                join(src_node_modules_folder, "eslint"),
+                join(build_node_modules_folder, "eslint")
             ],
             [
-                join(root_folder, "node_modules", "eslint-plugin-jsdoc"),
-                join(build_root_folder, "node_modules", "eslint-plugin-jsdoc")
+                join(src_node_modules_folder, "eslint-plugin-jsdoc"),
+                join(build_node_modules_folder, "eslint-plugin-jsdoc")
             ],
             [
-                join(root_folder, "node_modules", "eslint-plugin-json"),
-                join(build_root_folder, "node_modules", "eslint-plugin-json")
+                join(src_node_modules_folder, "eslint-plugin-json"),
+                join(build_node_modules_folder, "eslint-plugin-json")
             ]
         ]) {
         console.log(`Copy ${src} to ${dest}`);
@@ -82,7 +83,7 @@ try {
 
     await (await (await import("flux-build-utils/src/DeleteExcludedFiles.mjs")).DeleteExcludedFiles.new())
         .deleteExcludedFiles(
-            join(build_root_folder, "node_modules"),
+            build_node_modules_folder,
             root_file => ([
                 "42",
                 "cjs",
@@ -97,7 +98,7 @@ try {
         );
     await (await (await import("flux-build-utils/src/DeleteEmptyFoldersOrInvalidSymlinks.mjs")).DeleteEmptyFoldersOrInvalidSymlinks.new())
         .deleteEmptyFoldersOrInvalidSymlinks(
-            join(build_root_folder, "node_modules")
+            build_node_modules_folder
         );
 
     for (const [
@@ -105,8 +106,8 @@ try {
         dest
     ] of [
             [
-                join(build_root_folder, "flux-js-lint.mjs"),
-                join(build_folder, "usr", "local", "bin", "flux-js-lint")
+                join(build_lib_folder, "flux-js-lint.mjs"),
+                join(build_bin_folder, "flux-js-lint")
             ]
         ]) {
         console.log(`Create symlink ${src} to ${dest}`);
@@ -122,11 +123,7 @@ try {
 } catch (error) {
     console.error(error);
 
-    if (flux_shutdown_handler !== null) {
-        await flux_shutdown_handler.shutdown(
-            1
-        );
-    } else {
-        process.exit(1);
-    }
+    await flux_shutdown_handler.shutdown(
+        1
+    );
 }
