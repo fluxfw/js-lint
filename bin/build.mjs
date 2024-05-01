@@ -38,9 +38,9 @@ try {
         await bundler.bundle(
             src,
             dest,
-            [
+            async path => [
                 "eslint"
-            ],
+            ].some(exclude_module => exclude_module === path || path.startsWith(`${exclude_module}/`)) ? false : null,
             async code => minifier.minifyCSS(
                 code
             ),
