@@ -1,6 +1,4 @@
-# flux-js-lint
-
-My eslint configuration and runner
+# js-lint
 
 ## Installation
 
@@ -8,8 +6,8 @@ Add the files in [bin/HOST_PATH](bin/HOST_PATH) to your PATH
 
 ## Commands
 
-### flux-js-lint
+### js-lint
 
 ```shell
-flux-js-lint .
+js-lint .
 ```

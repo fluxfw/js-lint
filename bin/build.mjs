@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
-import { FluxShutdownHandler } from "flux-shutdown-handler/src/FluxShutdownHandler.mjs";
+import { ShutdownHandler } from "shutdown-handler/src/ShutdownHandler.mjs";
 import { basename, dirname, extname, join, relative } from "node:path";
 import { cp, mkdir, symlink } from "node:fs/promises";
 
-const flux_shutdown_handler = await FluxShutdownHandler.new();
+const shutdown_handler = await ShutdownHandler.new();
 
 try {
     const dev = (process.argv[2] ?? "prod") === "dev";
@@ -24,15 +24,15 @@ try {
         throw new Error("Already built!");
     }
 
-    const bundler = await (await import("flux-build-utils/src/Bundler.mjs")).Bundler.new();
-    const minifier = await (await import("flux-build-utils/src/Minifier.mjs")).Minifier.new();
+    const bundler = await (await import("build-utils/src/Bundler.mjs")).Bundler.new();
+    const minifier = await (await import("build-utils/src/Minifier.mjs")).Minifier.new();
     for (const [
         src,
         dest
     ] of [
             [
-                join(src_bin_folder, "flux-js-lint.mjs"),
-                join(build_lib_folder, "flux-js-lint.mjs")
+                join(src_bin_folder, "js-lint.mjs"),
+                join(build_lib_folder, "js-lint.mjs")
             ]
         ]) {
         await bundler.bundle(
@@ -81,7 +81,7 @@ try {
         });
     }
 
-    await (await (await import("flux-build-utils/src/DeleteExcludedFiles.mjs")).DeleteExcludedFiles.new())
+    await (await (await import("build-utils/src/DeleteExcludedFiles.mjs")).DeleteExcludedFiles.new())
         .deleteExcludedFiles(
             build_node_modules_folder,
             root_file => ([
@@ -96,7 +96,7 @@ try {
                 "package-lock.json"
             ].includes(basename(root_file))) || basename(root_file).toLowerCase().includes("license")
         );
-    await (await (await import("flux-build-utils/src/DeleteEmptyFoldersOrInvalidSymlinks.mjs")).DeleteEmptyFoldersOrInvalidSymlinks.new())
+    await (await (await import("build-utils/src/DeleteEmptyFoldersOrInvalidSymlinks.mjs")).DeleteEmptyFoldersOrInvalidSymlinks.new())
         .deleteEmptyFoldersOrInvalidSymlinks(
             build_node_modules_folder
         );
@@ -106,8 +106,8 @@ try {
         dest
     ] of [
             [
-                join(build_lib_folder, "flux-js-lint.mjs"),
-                join(build_bin_folder, "flux-js-lint")
+                join(build_lib_folder, "js-lint.mjs"),
+                join(build_bin_folder, "js-lint")
             ]
         ]) {
         console.log(`Create symlink ${src} to ${dest}`);
@@ -123,7 +123,7 @@ try {
 } catch (error) {
     console.error(error);
 
-    await flux_shutdown_handler.shutdown(
+    await shutdown_handler.shutdown(
         1
     );
 }

@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-import { FluxShutdownHandler } from "flux-shutdown-handler/src/FluxShutdownHandler.mjs";
+import { ShutdownHandler } from "shutdown-handler/src/ShutdownHandler.mjs";
 
-const flux_shutdown_handler = await FluxShutdownHandler.new();
+const shutdown_handler = await ShutdownHandler.new();
 
 try {
     const path = process.argv[2] ?? null;
@@ -30,14 +30,14 @@ try {
     console.log(result);
 
     if (result.length > 0) {
-        await flux_shutdown_handler.shutdown(
+        await shutdown_handler.shutdown(
             1
         );
     }
 } catch (error) {
     console.error(error);
 
-    await flux_shutdown_handler.shutdown(
+    await shutdown_handler.shutdown(
         1
     );
 }

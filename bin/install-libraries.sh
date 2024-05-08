@@ -64,9 +64,9 @@ installNpmLibrary() {
 
 checkAlreadyInstalled
 
-installArchiveLibrary flux-build-utils https://github.com/fluxfw/flux-build-utils/archive/refs/tags/v2024-05-03-1.tar.gz
+installArchiveLibrary build-utils https://github.com/fluxfw/build-utils/archive/refs/tags/v2024-05-08-1.tar.gz
 
-installArchiveLibrary flux-shutdown-handler https://github.com/fluxfw/flux-shutdown-handler/archive/refs/tags/v2024-03-20-1.tar.gz
+installArchiveLibrary shutdown-handler https://github.com/fluxfw/shutdown-handler/archive/refs/tags/v2024-05-08-1.tar.gz
 
 installArchiveLibrary uglify-js https://registry.npmjs.org/uglify-js/-/uglify-js-3.17.4.tgz
 

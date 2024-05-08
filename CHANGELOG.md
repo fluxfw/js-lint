@@ -4,13 +4,20 @@
 
 Changes:
 
+\-
+
+## v2024-05-08-1
+
+Changes:
+
+- Deflux
 - Install to `lib` instead of `opt`
 - Simple `bin` in `.dockerignore`
 - Remove `bin` folder from build
 - Remove `node` user (Always run with host user id)
 - Merge `RUN`'s in `Dockerfile`
 - Disable npm audit/fund
-- Update `flux-build-utils`
+- Update `build-utils`
 
 ## v2024-01-15-1
 
