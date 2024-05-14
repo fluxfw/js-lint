@@ -81,7 +81,7 @@ try {
         });
     }
 
-    await (await (await import("build-utils/src/DeleteExcludedFiles.mjs")).DeleteExcludedFiles.new())
+    await (await (await import("../src/build/DeleteExcludedFiles.mjs")).DeleteExcludedFiles.new())
         .deleteExcludedFiles(
             build_node_modules_folder,
             root_file => ([
@@ -96,7 +96,7 @@ try {
                 "package-lock.json"
             ].includes(basename(root_file))) || basename(root_file).toLowerCase().includes("license")
         );
-    await (await (await import("build-utils/src/DeleteEmptyFoldersOrInvalidSymlinks.mjs")).DeleteEmptyFoldersOrInvalidSymlinks.new())
+    await (await (await import("../src/build/DeleteEmptyFoldersOrInvalidSymlinks.mjs")).DeleteEmptyFoldersOrInvalidSymlinks.new())
         .deleteEmptyFoldersOrInvalidSymlinks(
             build_node_modules_folder
         );

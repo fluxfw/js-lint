@@ -64,7 +64,7 @@ installNpmLibrary() {
 
 checkAlreadyInstalled
 
-installArchiveLibrary build-utils https://github.com/fluxfw/build-utils/archive/refs/tags/v2024-05-08-1.tar.gz
+installArchiveLibrary build-utils https://github.com/fluxfw/build-utils/archive/refs/tags/v2024-05-14-1.tar.gz
 
 installArchiveLibrary shutdown-handler https://github.com/fluxfw/shutdown-handler/archive/refs/tags/v2024-05-08-1.tar.gz
 
