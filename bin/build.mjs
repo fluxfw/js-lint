@@ -44,6 +44,12 @@ try {
             async code => minifier.minifyCSS(
                 code
             ),
+            async code => minifier.minifyCSSRule(
+                code
+            ),
+            async code => minifier.minifyCSSSelector(
+                code
+            ),
             async code => minifier.minifyXML(
                 code
             ),
