@@ -1,0 +1,7 @@
+*
+!.dockerignore
+!.gitignore
+!build.sh
+!Dockerfile
+!lint.sh
+!publish.sh

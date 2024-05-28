@@ -1,6 +1,0 @@
-*
-!bin
-!bin/**
-!src
-!src/**
-!.eslintrc.json

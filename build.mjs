@@ -3,21 +3,46 @@ import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { ShutdownHandler } from "shutdown-handler/src/ShutdownHandler.mjs";
 import { basename, dirname, extname, join, relative } from "node:path";
+import { CONFIG_TYPE_BOOLEAN, CONFIG_TYPE_STRING } from "config/src/CONFIG_TYPE.mjs";
 import { cp, mkdir, symlink } from "node:fs/promises";
 
 const shutdown_handler = await ShutdownHandler.new();
 
 try {
-    const dev = (process.argv[2] ?? "prod") === "dev";
+    const config = await (await import("config/src/Config.mjs")).Config.new(
+        await (await import("config/src/getValueProviders.mjs")).getValueProviders(
+            true
+        )
+    );
 
-    const src_bin_folder = dirname(fileURLToPath(import.meta.url));
-    const src_root_folder = join(src_bin_folder, "..");
+    const dev = await config.getConfig(
+        "dev",
+        CONFIG_TYPE_BOOLEAN,
+        false
+    );
+    const minify = await config.getConfig(
+        "minify",
+        CONFIG_TYPE_BOOLEAN,
+        !dev
+    );
+
+    const src_root_folder = dirname(fileURLToPath(import.meta.url));
     const src_node_modules_folder = join(src_root_folder, "node_modules");
 
-    const build_folder = join(src_root_folder, "build");
+    const application_id = await config.getConfig(
+        "application-id",
+        CONFIG_TYPE_STRING,
+        async () => `${basename(src_root_folder)}${dev ? "-dev" : ""}`
+    );
+
+    const build_folder = await config.getConfig(
+        "folder",
+        CONFIG_TYPE_STRING,
+        async () => join(src_root_folder, "build")
+    );
     const build_usr_folder = join(build_folder, "usr", "local");
     const build_bin_folder = join(build_usr_folder, "bin");
-    const build_lib_folder = join(build_usr_folder, "lib", basename(src_root_folder));
+    const build_lib_folder = join(build_usr_folder, "lib", application_id);
     const build_node_modules_folder = join(build_lib_folder, "node_modules");
 
     if (existsSync(build_folder)) {
@@ -31,8 +56,8 @@ try {
         dest
     ] of [
             [
-                join(src_bin_folder, "js-lint.mjs"),
-                join(build_lib_folder, "js-lint.mjs")
+                join(src_root_folder, "lint.mjs"),
+                join(build_lib_folder, "lint.mjs")
             ]
         ]) {
         await bundler.bundle(
@@ -41,23 +66,23 @@ try {
             async path => [
                 "eslint"
             ].some(exclude_module => exclude_module === path || path.startsWith(`${exclude_module}/`)) ? false : null,
-            async code => minifier.minifyCSS(
+            minify ? async code => minifier.minifyCSS(
                 code
-            ),
-            async code => minifier.minifyCSSRule(
+            ) : null,
+            minify ? async code => minifier.minifyCSSRule(
                 code
-            ),
-            async code => minifier.minifyCSSSelector(
+            ) : null,
+            minify ? async code => minifier.minifyCSSSelector(
                 code
-            ),
-            async code => minifier.minifyXML(
+            ) : null,
+            minify ? async code => minifier.minifyXML(
                 code
-            ),
+            ) : null,
             dev
         );
     }
 
-    if (!dev) {
+    if (minify) {
         await minifier.minifyFolder(
             build_folder
         );
@@ -87,7 +112,7 @@ try {
         });
     }
 
-    await (await (await import("../src/build/DeleteExcludedFiles.mjs")).DeleteExcludedFiles.new())
+    await (await (await import("./src/build/DeleteExcludedFiles.mjs")).DeleteExcludedFiles.new())
         .deleteExcludedFiles(
             build_node_modules_folder,
             root_file => ([
@@ -102,7 +127,7 @@ try {
                 "package-lock.json"
             ].includes(basename(root_file))) || basename(root_file).toLowerCase().includes("license")
         );
-    await (await (await import("../src/build/DeleteEmptyFoldersOrInvalidSymlinks.mjs")).DeleteEmptyFoldersOrInvalidSymlinks.new())
+    await (await (await import("./src/build/DeleteEmptyFoldersOrInvalidSymlinks.mjs")).DeleteEmptyFoldersOrInvalidSymlinks.new())
         .deleteEmptyFoldersOrInvalidSymlinks(
             build_node_modules_folder
         );
@@ -112,8 +137,8 @@ try {
         dest
     ] of [
             [
-                join(build_lib_folder, "js-lint.mjs"),
-                join(build_bin_folder, "js-lint")
+                join(build_lib_folder, "lint.mjs"),
+                join(build_bin_folder, application_id)
             ]
         ]) {
         console.log(`Create symlink ${src} to ${dest}`);

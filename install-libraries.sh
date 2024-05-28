@@ -2,16 +2,7 @@
 
 set -e
 
-bin_folder="`dirname "$0"`"
-root_folder="$bin_folder/.."
-node_modules_folder="$root_folder/node_modules"
-
-checkAlreadyInstalled() {
-    if [ -e "$node_modules_folder" ]; then
-        echo "Already installed!" >&2
-        exit 1
-    fi
-}
+node_modules_folder="`dirname "$0"`/node_modules"
 
 installArchiveLibrary() {
     dest="$node_modules_folder/$1"
@@ -62,9 +53,9 @@ installNpmLibrary() {
     rmdir "$dest_temp"
 }
 
-checkAlreadyInstalled
-
 installArchiveLibrary build-utils https://github.com/fluxfw/build-utils/archive/refs/tags/v2024-05-20-4.tar.gz
+
+installArchiveLibrary config https://github.com/fluxfw/config/archive/refs/tags/v2024-05-08-1.tar.gz
 
 installArchiveLibrary shutdown-handler https://github.com/fluxfw/shutdown-handler/archive/refs/tags/v2024-05-08-1.tar.gz
 
