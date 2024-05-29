@@ -11,20 +11,25 @@ user="${PUBLISH_DOCKER_USER:=fluxfw}"
 image="$host_with_slash$user/$application_id"
 version="v$(<"$root_folder/../version")"
 
-rm -rf "$root_folder/tmp" && mkdir -p "$root_folder/tmp"
+rm -rf "$root_folder/temp" && mkdir -p "$root_folder/temp"
 
-sed "s/%APPLICATION_ID%/$application_id/g" "$root_folder/Dockerfile" > "$root_folder/tmp/Dockerfile"
+placeholder_files=Dockerfile
+for file in $placeholder_files; do
+    sed "s/%APPLICATION_ID%/$application_id/g" "$root_folder/$file" > "$root_folder/temp/$file" && chmod "`stat -c %a "$root_folder/$file"`" "$root_folder/temp/$file"
+done
 
-(cd "$root_folder/tmp" && echo "../../src
+(cd "$root_folder/temp" && echo "../../src
 ../.dockerignore
 ../../.eslintrc.json
 ../../build.mjs
 Dockerfile
 ../../install-libraries.sh
-../../lint.mjs" | tar -czT -) > "$root_folder/tmp/$application_id-$version.tar.gz"
+../../lint.mjs" | tar -czT -) > "$root_folder/temp/$application_id-$version.tar.gz"
 
-unlink "$root_folder/tmp/Dockerfile"
+for file in $placeholder_files; do
+    unlink "$root_folder/temp/$file"
+done
 
-docker build - --pull -t "$image:$version" -t "$image:latest" < "$root_folder/tmp/$application_id-$version.tar.gz"
+docker build - --pull -t "$image:$version" -t "$image:latest" < "$root_folder/temp/$application_id-$version.tar.gz"
 
-rm -rf "$root_folder/tmp"
+rm -rf "$root_folder/temp"
