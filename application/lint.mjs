@@ -17,7 +17,7 @@ try {
             ".mjs"
         ],
         globInputPaths: false,
-        overrideConfig: (await import("./.eslintrc.json", { with: { type: "json" } })).default,
+        overrideConfig: (await import("./Config/.eslintrc.json", { with: { type: "json" } })).default,
         useEslintrc: false
     });
 

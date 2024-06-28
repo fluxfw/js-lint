@@ -1,7 +1,5 @@
 *
-!src
-!src/**
-!.eslintrc.json
+!application
+!application/**
 !build.mjs
 !install-libraries.sh
-!lint.mjs

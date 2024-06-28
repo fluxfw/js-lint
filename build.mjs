@@ -27,6 +27,7 @@ try {
     );
 
     const src_root_folder = dirname(fileURLToPath(import.meta.url));
+    const src_application_folder = join(src_root_folder, "application");
     const src_node_modules_folder = join(src_root_folder, "node_modules");
 
     const application_id = await config.getConfig(
@@ -56,7 +57,7 @@ try {
         dest
     ] of [
             [
-                join(src_root_folder, "lint.mjs"),
+                join(src_application_folder, "lint.mjs"),
                 join(build_lib_folder, "lint.mjs")
             ]
         ]) {
@@ -112,7 +113,7 @@ try {
         });
     }
 
-    await (await (await import("./src/Build/DeleteExcludedFiles.mjs")).DeleteExcludedFiles.new())
+    await (await (await import("./application/Build/DeleteExcludedFiles.mjs")).DeleteExcludedFiles.new())
         .deleteExcludedFiles(
             build_node_modules_folder,
             root_file => ([
@@ -127,7 +128,7 @@ try {
                 "package-lock.json"
             ].includes(basename(root_file))) || basename(root_file).toLowerCase().includes("license")
         );
-    await (await (await import("./src/Build/DeleteEmptyFoldersOrInvalidSymlinks.mjs")).DeleteEmptyFoldersOrInvalidSymlinks.new())
+    await (await (await import("./application/Build/DeleteEmptyFoldersOrInvalidSymlinks.mjs")).DeleteEmptyFoldersOrInvalidSymlinks.new())
         .deleteEmptyFoldersOrInvalidSymlinks(
             build_node_modules_folder
         );
