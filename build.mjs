@@ -67,18 +67,10 @@ try {
             async path => [
                 "eslint"
             ].some(exclude_module => exclude_module === path || path.startsWith(`${exclude_module}/`)) ? false : null,
-            minify ? async code => minifier.minifyCSS(
-                code
-            ) : null,
-            minify ? async code => minifier.minifyCSSRule(
-                code
-            ) : null,
-            minify ? async code => minifier.minifyCSSSelector(
-                code
-            ) : null,
-            minify ? async code => minifier.minifyXML(
-                code
-            ) : null,
+            null,
+            null,
+            null,
+            null,
             dev
         );
     }
