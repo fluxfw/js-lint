@@ -1,14 +1,12 @@
 #!/usr/bin/env node
 import { CONFIG_TYPE_STRING } from "config/src/CONFIG_TYPE.mjs";
-import { dirname } from "node:path";
-import { fileURLToPath } from "node:url";
 import { ShutdownHandler } from "shutdown-handler/src/ShutdownHandler.mjs";
 
 const shutdown_handler = await ShutdownHandler.new();
 
 try {
     const eslint = new (await import("eslint")).ESLint({
-        cwd: dirname(fileURLToPath(import.meta.url)),
+        cwd: import.meta.dirname,
         errorOnUnmatchedPattern: false,
         extensions: [
             ".cjs",

@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 import { existsSync } from "node:fs";
-import { fileURLToPath } from "node:url";
 import { ShutdownHandler } from "shutdown-handler/src/ShutdownHandler.mjs";
 import { basename, dirname, extname, join, relative } from "node:path";
 import { CONFIG_TYPE_BOOLEAN, CONFIG_TYPE_STRING } from "config/src/CONFIG_TYPE.mjs";
@@ -26,20 +25,19 @@ try {
         !dev
     );
 
-    const src_root_folder = dirname(fileURLToPath(import.meta.url));
-    const src_application_folder = join(src_root_folder, "application");
-    const src_node_modules_folder = join(src_root_folder, "node_modules");
+    const application_folder = join(import.meta.dirname, "application");
+    const node_modules_folder = join(import.meta.dirname, "node_modules");
 
     const application_id = await config.getConfig(
         "application-id",
         CONFIG_TYPE_STRING,
-        async () => `${basename(src_root_folder)}${dev ? "-dev" : ""}`
+        async () => `${basename(import.meta.dirname)}${dev ? "-dev" : ""}`
     );
 
     const build_folder = await config.getConfig(
         "folder",
         CONFIG_TYPE_STRING,
-        async () => join(src_root_folder, "build")
+        async () => join(import.meta.dirname, "build")
     );
     const build_usr_folder = join(build_folder, "usr", "local");
     const build_bin_folder = join(build_usr_folder, "bin");
@@ -57,7 +55,7 @@ try {
         dest
     ] of [
             [
-                join(src_application_folder, "lint.mjs"),
+                join(application_folder, "lint.mjs"),
                 join(build_lib_folder, "lint.mjs")
             ]
         ]) {
@@ -86,15 +84,15 @@ try {
         dest
     ] of [
             [
-                join(src_node_modules_folder, "eslint"),
+                join(node_modules_folder, "eslint"),
                 join(build_node_modules_folder, "eslint")
             ],
             [
-                join(src_node_modules_folder, "eslint-plugin-jsdoc"),
+                join(node_modules_folder, "eslint-plugin-jsdoc"),
                 join(build_node_modules_folder, "eslint-plugin-jsdoc")
             ],
             [
-                join(src_node_modules_folder, "eslint-plugin-json"),
+                join(node_modules_folder, "eslint-plugin-json"),
                 join(build_node_modules_folder, "eslint-plugin-json")
             ]
         ]) {
