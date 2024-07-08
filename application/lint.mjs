@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-import { CONFIG_TYPE_STRING } from "config/src/CONFIG_TYPE.mjs";
-import { ShutdownHandler } from "shutdown-handler/src/ShutdownHandler.mjs";
+import { CONFIG_TYPE_STRING } from "config/CONFIG_TYPE.mjs";
+import { ShutdownHandler } from "shutdown-handler/ShutdownHandler.mjs";
 
 const shutdown_handler = await ShutdownHandler.new();
 
@@ -19,8 +19,8 @@ try {
         useEslintrc: false
     });
 
-    const result = (await eslint.loadFormatter()).format(await eslint.lintFiles(await (await (await import("config/src/Config.mjs")).Config.new(
-        await (await import("config/src/getValueProviders.mjs")).getValueProviders(
+    const result = (await eslint.loadFormatter()).format(await eslint.lintFiles(await (await (await import("config/Config.mjs")).Config.new(
+        await (await import("config/getValueProviders.mjs")).getValueProviders(
             true
         )
     )).getConfig(
