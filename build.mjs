@@ -44,12 +44,13 @@ try {
     const build_lib_folder = join(build_usr_folder, "lib", application_id);
     const build_node_modules_folder = join(build_lib_folder, "node_modules");
 
+    const bundler = await (await import("bundler/src/Bundler.mjs")).Bundler.new();
+    const minifier = await (await import("bundler/src/Minifier.mjs")).Minifier.new();
+
     if (existsSync(build_folder)) {
         throw new Error("Already built!");
     }
 
-    const bundler = await (await import("build-utils/src/Bundler.mjs")).Bundler.new();
-    const minifier = await (await import("build-utils/src/Minifier.mjs")).Minifier.new();
     for (const [
         src,
         dest
@@ -62,20 +63,19 @@ try {
         await bundler.bundle(
             src,
             dest,
-            async path => [
+            async (type, path) => [
                 "eslint"
             ].some(exclude_module => exclude_module === path || path.startsWith(`${exclude_module}/`)) ? false : null,
+            minify,
+            async code => minifier.minifyESMJavaScript(
+                code
+            ),
+            null,
             null,
             null,
             null,
             null,
             dev
-        );
-    }
-
-    if (minify) {
-        await minifier.minifyFolder(
-            build_folder
         );
     }
 
