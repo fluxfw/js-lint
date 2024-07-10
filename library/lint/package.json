@@ -1,0 +1,7 @@
+{
+    "exports": {
+        "./*": "./library/*"
+    },
+    "name": "@js-lint/lint",
+    "private": true
+}

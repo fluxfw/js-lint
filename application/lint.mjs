@@ -5,32 +5,21 @@ import { ShutdownHandler } from "shutdown-handler/ShutdownHandler.mjs";
 const shutdown_handler = await ShutdownHandler.new();
 
 try {
-    const eslint = new (await import("eslint")).ESLint({
-        cwd: import.meta.dirname,
-        errorOnUnmatchedPattern: false,
-        extensions: [
-            ".cjs",
-            ".js",
-            ".json",
-            ".mjs"
-        ],
-        globInputPaths: false,
-        overrideConfig: (await import("./Config/.eslintrc.json", { with: { type: "json" } })).default,
-        useEslintrc: false
-    });
+    const result = await (await (await import("@js-lint/lint/Lint.mjs")).Lint.new())
+        .lint(
+            await (await (await import("config/Config.mjs")).Config.new(
+                await (await import("config/getValueProviders.mjs")).getValueProviders(
+                    true
+                )
+            )).getConfig(
+                "path",
+                CONFIG_TYPE_STRING
+            )
+        );
 
-    const result = (await eslint.loadFormatter()).format(await eslint.lintFiles(await (await (await import("config/Config.mjs")).Config.new(
-        await (await import("config/getValueProviders.mjs")).getValueProviders(
-            true
-        )
-    )).getConfig(
-        "path",
-        CONFIG_TYPE_STRING
-    )));
+    if (result !== null) {
+        console.log(result);
 
-    console.log(result);
-
-    if (result.length > 0) {
         await shutdown_handler.shutdown(
             1
         );

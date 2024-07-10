@@ -3,7 +3,7 @@ import { existsSync } from "node:fs";
 import { ShutdownHandler } from "shutdown-handler/ShutdownHandler.mjs";
 import { basename, dirname, extname, join, relative } from "node:path";
 import { CONFIG_TYPE_BOOLEAN, CONFIG_TYPE_STRING } from "config/CONFIG_TYPE.mjs";
-import { cp, mkdir, symlink } from "node:fs/promises";
+import { cp, mkdir, rm, symlink } from "node:fs/promises";
 
 const shutdown_handler = await ShutdownHandler.new();
 
@@ -24,9 +24,6 @@ try {
         CONFIG_TYPE_BOOLEAN,
         !dev
     );
-
-    const application_folder = join(import.meta.dirname, "application");
-    const node_modules_folder = join(import.meta.dirname, "node_modules");
 
     const application_id = await config.getConfig(
         "application-id",
@@ -56,14 +53,14 @@ try {
         dest
     ] of [
             [
-                join(application_folder, "lint.mjs"),
+                "./application/lint.mjs",
                 join(build_lib_folder, "lint.mjs")
             ]
         ]) {
         await bundler.bundle(
             src,
             dest,
-            async (type, path) => [
+            async path => [
                 "eslint"
             ].some(exclude_module => exclude_module === path || path.startsWith(`${exclude_module}/`)) ? false : null,
             minify,
@@ -84,16 +81,10 @@ try {
         dest
     ] of [
             [
-                join(node_modules_folder, "eslint"), // TODO: Use resolve
-                join(build_node_modules_folder, "eslint")
-            ],
-            [
-                join(node_modules_folder, "eslint-plugin-jsdoc"), // TODO: Use resolve
-                join(build_node_modules_folder, "eslint-plugin-jsdoc")
-            ],
-            [
-                join(node_modules_folder, "eslint-plugin-json"), // TODO: Use resolve
-                join(build_node_modules_folder, "eslint-plugin-json")
+                join(dirname(await bundler.resolve(
+                    "eslint"
+                )), "..", ".."),
+                join(build_node_modules_folder)
             ]
         ]) {
         console.log(`Copy ${src} to ${dest}`);
@@ -103,7 +94,25 @@ try {
         });
     }
 
-    await (await (await import("./application/Build/DeleteExcludedFiles.mjs")).DeleteExcludedFiles.new())
+    for (const src of [
+        join(build_node_modules_folder, "@js-lint"),
+        join(build_node_modules_folder, "bundler"),
+        join(build_node_modules_folder, "config"),
+        join(build_node_modules_folder, "shutdown-handler"),
+        join(build_node_modules_folder, "uglify-js")
+    ]) {
+        if (!existsSync(src)) {
+            continue;
+        }
+
+        console.log(`Delete ${src}`);
+
+        await rm(src, {
+            recursive: true
+        });
+    }
+
+    await (await (await import("@js-lint/build/DeleteExcludedFiles.mjs")).DeleteExcludedFiles.new())
         .deleteExcludedFiles(
             build_node_modules_folder,
             root_file => ([
@@ -118,7 +127,7 @@ try {
                 "package-lock.json"
             ].includes(basename(root_file))) || basename(root_file).toLowerCase().includes("license")
         );
-    await (await (await import("./application/Build/DeleteEmptyFoldersOrInvalidSymlinks.mjs")).DeleteEmptyFoldersOrInvalidSymlinks.new())
+    await (await (await import("@js-lint/build/DeleteEmptyFoldersOrInvalidSymlinks.mjs")).DeleteEmptyFoldersOrInvalidSymlinks.new())
         .deleteEmptyFoldersOrInvalidSymlinks(
             build_node_modules_folder
         );
