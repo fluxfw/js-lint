@@ -69,10 +69,10 @@ export class DeleteEmptyFoldersOrInvalidSymlinks {
             }
 
             if (stat.isDirectory()) {
-                console.log(`Delete ${file} (Empty folder)`);
+                console.log(`Delete ${file}`);
                 await rmdir(file);
             } else {
-                console.log(`Delete ${file} (Invalid symlink)`);
+                console.log(`Delete ${file}`);
                 await unlink(file);
             }
         }

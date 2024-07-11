@@ -56,7 +56,7 @@ export class DeleteExcludedFiles {
                     throw error;
                 }
 
-                console.log(`Delete ${file} (File filter)`);
+                console.log(`Delete ${file}`);
 
                 await unlink(file);
             }
@@ -76,7 +76,7 @@ export class DeleteExcludedFiles {
                     throw error;
                 }
 
-                console.log(`Delete ${file} (JSDoc file)`);
+                console.log(`Delete ${file}`);
 
                 await unlink(file);
             }

@@ -94,6 +94,26 @@ try {
         });
     }
 
+    for (const [
+        src,
+        dest
+    ] of [
+            [
+                join(build_lib_folder, "lint.mjs"),
+                join(build_bin_folder, application_id)
+            ]
+        ]) {
+        console.log(`Create symlink ${src} to ${dest}`);
+
+        const dest_folder = dirname(dest);
+
+        await mkdir(dest_folder, {
+            recursive: true
+        });
+
+        await symlink(relative(dest_folder, src), dest);
+    }
+
     for (const src of [
         join(build_node_modules_folder, "@js-lint"),
         join(build_node_modules_folder, "bundler"),
@@ -116,12 +136,10 @@ try {
         .deleteExcludedFiles(
             build_node_modules_folder,
             root_file => ([
-                "42",
                 "cjs",
                 "js",
                 "json",
-                "mjs",
-                "node"
+                "mjs"
             ].includes(extname(root_file).substring(1).toLowerCase()) && ![
                 ".package-lock.json",
                 "package-lock.json"
@@ -131,26 +149,6 @@ try {
         .deleteEmptyFoldersOrInvalidSymlinks(
             build_node_modules_folder
         );
-
-    for (const [
-        src,
-        dest
-    ] of [
-            [
-                join(build_lib_folder, "lint.mjs"),
-                join(build_bin_folder, application_id)
-            ]
-        ]) {
-        console.log(`Create symlink ${src} to ${dest}`);
-
-        const dest_folder = dirname(dest);
-
-        await mkdir(dest_folder, {
-            recursive: true
-        });
-
-        await symlink(relative(dest_folder, src), dest);
-    }
 } catch (error) {
     console.error(error);
 
