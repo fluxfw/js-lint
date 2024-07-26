@@ -6,7 +6,7 @@
         "eslint-plugin-json": "3.1.0"
     },
     "devDependencies": {
-        "bundler": "https://github.com/fluxfw/bundler/archive/refs/tags/v2024-07-18-1.tar.gz",
+        "bundler": "https://github.com/fluxfw/bundler/archive/refs/tags/v2024-07-26-1.tar.gz",
         "uglify-js": "3.17.4"
     },
     "name": "@js-lint/root",
