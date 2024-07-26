@@ -2,7 +2,7 @@
 import { Config } from "config/Config.mjs";
 import { CONFIG_TYPE_STRING } from "config/CONFIG_TYPE.mjs";
 import { getValueProviders } from "config/getValueProviders.mjs";
-import { Lint } from "@js-lint/lint/Lint.mjs";
+import { Lint } from "@js-lint/lint/Lint/Lint.mjs";
 
 const result = await (await Lint.new())
     .lint(

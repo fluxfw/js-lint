@@ -28,7 +28,7 @@ export class Lint {
                 ".mjs"
             ],
             globInputPaths: false,
-            overrideConfig: (await import("./Config/.eslintrc.json", { with: { type: "json" } })).default,
+            overrideConfig: (await import("../Config/.eslintrc.json", { with: { type: "json" } })).default,
             useEslintrc: false
         });
 

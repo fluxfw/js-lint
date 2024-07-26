@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 import { Bundler } from "bundler/Bundler.mjs";
 import { Config } from "config/Config.mjs";
-import { DeleteEmptyFoldersOrInvalidSymlinks } from "@js-lint/build/DeleteEmptyFoldersOrInvalidSymlinks.mjs";
-import { DeleteExcludedFiles } from "@js-lint/build/DeleteExcludedFiles.mjs";
+import { DeleteEmptyFoldersOrInvalidSymlinks } from "@js-lint/build/Build/DeleteEmptyFoldersOrInvalidSymlinks.mjs";
+import { DeleteExcludedFiles } from "@js-lint/build/Build/DeleteExcludedFiles.mjs";
 import { existsSync } from "node:fs";
 import { getValueProviders } from "config/getValueProviders.mjs";
 import { Minifier } from "bundler/Minifier.mjs";
